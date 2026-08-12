@@ -1,43 +1,752 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dr. HAL – Prazos</title>
+
+    <meta
+        name="description"
+        content="Dr. HAL – Prazos: ferramenta para auxiliar no cálculo de prazos processuais em dias úteis."
+    >
+
+    <link rel="icon" href="logo-drhal.png">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f5f7;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1100px, 90%);
+            margin: 0 auto;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            background-color: #111827;
+            color: white;
+            padding: 18px 0;
+            border-bottom: 3px solid #b91c1c;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .brand-subtitle {
+            font-size: 0.83rem;
+            color: #cbd5e1;
+        }
+
+        /* HERO */
+
+        .hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    #edf0f4 100%
+                );
+
+            padding: 75px 0 65px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 55px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: #991b1b;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            line-height: 1.08;
+            color: #111827;
+            margin-bottom: 22px;
+        }
+
+        .hero-text {
+            font-size: 1.12rem;
+            color: #4b5563;
+            max-width: 620px;
+            margin-bottom: 28px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 22px;
+            border-radius: 7px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .button-primary {
+            background-color: #b91c1c;
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: #991b1b;
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            color: #1f2937;
+            border: 1px solid #9ca3af;
+            background: white;
+        }
+
+        .button-secondary:hover {
+            background-color: #f3f4f6;
+        }
+
+        .version-info {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .program-image {
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .program-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+
+        .image-caption {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.78rem;
+            padding-top: 9px;
+        }
+
+        /* SEÇÕES */
+
+        section {
+            padding: 70px 0;
+        }
+
+        section.white {
+            background-color: white;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            line-height: 1.2;
+            color: #111827;
+            margin-bottom: 14px;
+        }
+
+        .section-intro {
+            color: #6b7280;
+            max-width: 760px;
+            margin-bottom: 35px;
+        }
+
+        /* CARDS */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 28px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .white .card {
+            background-color: #f8fafc;
+        }
+
+        .card-number {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #b91c1c;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 9px;
+            color: #1f2937;
+        }
+
+        .card p {
+            color: #5b6471;
+            font-size: 0.95rem;
+        }
+
+        /* DESTAQUE CTRL+V */
+
+        .workflow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .workflow-example {
+            background-color: #111827;
+            color: #e5e7eb;
+            border-radius: 10px;
+            padding: 28px;
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.55;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        .workflow-example .label {
+            display: block;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        kbd {
+            background: #e5e7eb;
+            color: #111827;
+            border-radius: 4px;
+            padding: 3px 6px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 700;
+        }
+
+        /* ESCOPO */
+
+        .scope-box {
+            background-color: #fff;
+            border-left: 5px solid #b91c1c;
+            padding: 28px 30px;
+            border-radius: 4px 9px 9px 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 900px;
+        }
+
+        .scope-box p + p {
+            margin-top: 16px;
+        }
+
+        /* FUTURO */
+
+        .future {
+            background-color: #111827;
+            color: white;
+        }
+
+        .future .section-title {
+            color: white;
+        }
+
+        .future .section-intro {
+            color: #cbd5e1;
+        }
+
+        .future-box {
+            border: 1px solid #374151;
+            background: #1f2937;
+            border-radius: 10px;
+            padding: 32px;
+            max-width: 850px;
+        }
+
+        .future-box p {
+            color: #e5e7eb;
+        }
+
+        .future .button-secondary {
+            margin-top: 22px;
+            border-color: #9ca3af;
+        }
+
+        /* DISCLAIMER */
+
+        .disclaimer {
+            background-color: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+            padding: 23px 25px;
+            color: #7c2d12;
+            font-size: 0.91rem;
+        }
+
+        .disclaimer strong {
+            color: #9a3412;
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            background-color: #0b0f19;
+            color: #9ca3af;
+            padding: 27px 0;
+            font-size: 0.82rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        footer a {
+            color: #d1d5db;
+        }
+
+        /* RESPONSIVO */
+
+        @media (max-width: 800px) {
+            .hero-grid,
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 50px 0;
+            }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .hero-grid {
+                gap: 35px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Dr. HAL – Prazos</h1>
+    <!-- CABEÇALHO -->
 
-    <p>
-        Ferramenta para cálculo de prazos processuais em dias úteis,
-        considerando feriados e períodos de suspensão aplicáveis.
-    </p>
+    <header>
+        <div class="container header-content">
 
-    <h2>Versão gratuita 2026</h2>
+            <img
+                src="logo-drhal.png"
+                alt="Logo Dr. HAL"
+                class="logo"
+            >
 
-    <p>
-        A versão atualmente disponível pode ser utilizada gratuitamente
-        durante o ano de 2026.
-    </p>
-    <p>
-    <a href="https://github.com/lowenadv/drhal-site/releases/download/v0.1.2/Instalar_Dr_HAL_Prazos_v0_1_2.exe">
-        Baixar gratuitamente o Dr. HAL – Prazos
-    </a>
-</p>
+            <div>
+                <div class="brand-name">Dr. HAL – Prazos</div>
+                <div class="brand-subtitle">
+                    Advocacia Inteligente
+                </div>
+            </div>
 
-    <h2>Atualizações</h2>
+        </div>
+    </header>
 
-    <p>
-        Quer receber informações sobre as próximas versões do Dr. HAL – Prazos?
-    </p>
 
-    <p>
-        <a href="https://forms.gle/3gwXU8tkEd14eeuo9" target="_blank">
-            Tenho interesse nas próximas versões
-        </a>
-    </p>
+    <!-- APRESENTAÇÃO -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="container hero-grid">
+
+                <div>
+
+                    <span class="eyebrow">
+                        Versão gratuita 2026
+                    </span>
+
+                    <h1>
+                        Cálculo de prazos processuais com menos trabalho manual.
+                    </h1>
+
+                    <p class="hero-text">
+                        O Dr. HAL – Prazos auxilia no cálculo de prazos
+                        processuais em dias úteis e gera automaticamente o
+                        detalhamento da contagem, pronto para ser incorporado
+                        à petição.
+                    </p>
+
+                    <div class="buttons">
+
+                        <a
+                            class="button button-primary"
+                            href="https://github.com/lowenadv/drhal-site/releases/download/v0.1.2/Instalar_Dr_HAL_Prazos_v0_1_2.exe"
+                        >
+                            Baixar gratuitamente
+                        </a>
+
+                        <a
+                            class="button button-secondary"
+                            href="#como-funciona"
+                        >
+                            Como funciona
+                        </a>
+
+                    </div>
+
+                    <p class="version-info">
+                        Versão disponível: 0.1.2 • Windows
+                    </p>
+
+                </div>
+
+
+                <div class="program-image">
+
+                    <img
+                        src="screenshot-drhal.png"
+                        alt="Tela do Dr. HAL – Prazos"
+                    >
+
+                    <div class="image-caption">
+                        Interface da versão atual do Dr. HAL – Prazos
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMO FUNCIONA -->
+
+        <section id="como-funciona" class="white">
+
+            <div class="container">
+
+                <h2 class="section-title">
+                    Como funciona
+                </h2>
+
+                <p class="section-intro">
+                    Informe a data da disponibilização e o número de dias
+                    úteis do prazo. O Dr. HAL realiza a contagem e apresenta
+                    o resultado de forma pronta para utilização.
+                </p>
+
+
+                <div class="cards">
+
+                    <div class="card">
+
+                        <div class="card-number">01</div>
+
+                        <h3>Informe os dados</h3>
+
+                        <p>
+                            Digite a data de disponibilização no Diário da
+                            Justiça eletrônico e o número de dias úteis
+                            correspondente ao prazo.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-number">02</div>
+
+                        <h3>Calcule o prazo</h3>
+
+                        <p>
+                            O programa identifica a publicação, o início da
+                            contagem e o termo final, considerando os períodos
+                            contemplados em sua base de feriados e suspensões.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-number">03</div>
+
+                        <h3>Cole na petição</h3>
+
+                        <p>
+                            O detalhamento do cálculo é copiado
+                            automaticamente para a área de transferência,
+                            podendo ser inserido diretamente no documento.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CTRL V -->
+
+        <section>
+
+            <div class="container workflow">
+
+                <div>
+
+                    <span class="eyebrow">
+                        Mais do que o termo final
+                    </span>
+
+                    <h2 class="section-title">
+                        Do cálculo diretamente para a petição.
+                    </h2>
+
+                    <p>
+                        O Dr. HAL não se limita a indicar a data de vencimento.
+                        Ao concluir o cálculo, o programa copia automaticamente
+                        para a área de transferência um texto com o
+                        detalhamento da contagem.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Basta utilizar
+                        <kbd>Ctrl</kbd> + <kbd>V</kbd>
+                        no Word para incorporar o texto à petição, facilitando
+                        a elaboração dos tópicos destinados à demonstração da
+                        tempestividade do ato processual.
+                    </p>
+
+                </div>
+
+
+                <div class="workflow-example">
+
+                    <span class="label">
+                        Exemplo de texto gerado pelo programa
+                    </span>
+
+                    A disponibilização no Diário da Justiça eletrônico ocorreu
+                    em 12/08/2026 (quarta-feira), considerando-se, como data da
+                    publicação, o primeiro dia útil seguinte, em 13/08/2026
+                    (quinta-feira).
+
+                    <br><br>
+
+                    O prazo de 15 dias úteis começou a fluir em 14/08/2026
+                    (sexta-feira), esgotando-se em 03/09/2026
+                    (quinta-feira).
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ESCOPO 2026 -->
+
+        <section class="white">
+
+            <div class="container">
+
+                <span class="eyebrow">
+                    Escopo da versão atual
+                </span>
+
+                <h2 class="section-title">
+                    Base de feriados e suspensões de 2026
+                </h2>
+
+                <p class="section-intro">
+                    A versão atualmente disponibilizada foi desenvolvida
+                    inicialmente para cálculos relacionados à Capital do
+                    Estado de São Paulo.
+                </p>
+
+
+                <div class="scope-box">
+
+                    <p>
+                        A base atual considera os feriados e as suspensões de
+                        expediente previstos para a
+                        <strong>Capital do Estado de São Paulo, no ano de 2026</strong>,
+                        conforme divulgado no
+                        <strong>Provimento nº 2.813/2025 do Conselho Superior
+                        da Magistratura</strong>.
+                    </p>
+
+                    <p>
+                        O desenvolvimento do projeto prevê, futuramente, a
+                        incorporação de feriados de outros municípios, além
+                        dos calendários e atos normativos de outros tribunais.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FUTURAS VERSÕES -->
+
+        <section class="future">
+
+            <div class="container">
+
+                <span class="eyebrow">
+                    Próximas versões
+                </span>
+
+                <h2 class="section-title">
+                    Quer acompanhar a evolução do Dr. HAL?
+                </h2>
+
+                <p class="section-intro">
+                    O programa continuará sendo desenvolvido, com ampliação
+                    da base de calendários e aperfeiçoamento de suas
+                    funcionalidades.
+                </p>
+
+
+                <div class="future-box">
+
+                    <p>
+                        Se você utiliza o Dr. HAL e tem interesse em receber
+                        informações sobre futuras versões e atualizações,
+                        registre seu e-mail.
+                    </p>
+
+                    <a
+                        class="button button-secondary"
+                        href="https://forms.gle/3gwXU8tkEd14eeuo9"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Tenho interesse nas próximas versões
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- AVISO -->
+
+        <section class="white">
+
+            <div class="container">
+
+                <div class="disclaimer">
+
+                    <strong>Aviso importante:</strong>
+
+                    o Dr. HAL – Prazos é uma ferramenta auxiliar para a
+                    contagem de prazos processuais. Sua utilização não
+                    dispensa a consulta aos atos oficiais, calendários,
+                    normas e comunicados atualizados dos órgãos competentes,
+                    nem a conferência do cálculo pelo próprio usuário.
+
+                    A responsabilidade pela verificação e pelo cumprimento
+                    do prazo processual permanece com o profissional que
+                    utiliza a ferramenta.
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- RODAPÉ -->
+
+    <footer>
+
+        <div class="container footer-content">
+
+            <span>
+                Dr. HAL © 2026 • Paulo Lowenthal
+            </span>
+
+            <span>
+                <a href="mailto:lowenadv@gmail.com">
+                    lowenadv@gmail.com
+                </a>
+            </span>
+
+        </div>
+
+    </footer>
 
 </body>
 </html>
